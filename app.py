@@ -138,5 +138,5 @@ if st.button("🔍 Search Movies"):
 st.write("")
 st.markdown("---")
 st.markdown(
-    "Made with ❤️ using Streamlit + TMDB API"
+    "Made with ❤️ by DATA SCIENCE GROUP 14B"
 )
