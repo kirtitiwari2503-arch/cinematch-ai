@@ -8,78 +8,135 @@ st.set_page_config(
     layout="wide"
 )
 
+# CUSTOM CSS
+st.markdown("""
+<style>
+
+.main {
+    background-color: #0e1117;
+    color: white;
+}
+
+h1, h2, h3 {
+    color: white;
+}
+
+.stTextInput > div > div > input {
+    background-color: #262730;
+    color: white;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.stButton button {
+    background-color: #E50914;
+    color: white;
+    border-radius: 10px;
+    height: 50px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.stButton button:hover {
+    background-color: #ff1f1f;
+    color: white;
+}
+
+.css-1d391kg {
+    background-color: #111111;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 # SIDEBAR
 st.sidebar.title("🎥 CineMatch AI")
 
 st.sidebar.markdown("""
-### Features
+## About
 
-✅ Real Movie Database  
-✅ TMDB Integration  
-✅ Live Search  
-✅ Movie Posters  
-✅ Modern UI
+CineMatch AI helps users discover movies instantly using live TMDB API integration.
+
+### Features
+- 🎬 Live Movie Search
+- 🍿 Real Posters
+- ⭐ Movie Release Dates
+- 🚀 Fast Results
 """)
 
-# MAIN TITLE
-st.title("🎬 CineMatch AI")
+# HERO SECTION
+st.markdown("""
+# 🎬 CineMatch AI
 
-st.markdown(
-    "### Discover Movies Instantly 🍿"
-)
+### Your Smart Movie Discovery Assistant 🍿
+""")
 
 st.write("")
 
-# SEARCH INPUT
+# SEARCH BAR
 movie_name = st.text_input(
-    "Search Any Movie"
+    "Search your favorite movie"
 )
 
-# BUTTON
-if st.button("Search 🚀"):
+# SEARCH BUTTON
+if st.button("🔍 Search Movies"):
 
     if movie_name.strip() == "":
 
-        st.warning("Please enter movie name")
+        st.warning("⚠️ Please enter a movie name")
 
     else:
 
-        with st.spinner("Searching movies..."):
+        with st.spinner("Finding best movies for you..."):
 
             movies = search_movies(movie_name)
 
         if not movies:
 
-            st.error("No movies found")
+            st.error("❌ No movies found")
 
         else:
 
-            st.subheader("🎯 Search Results")
+            st.success(f"Showing results for: {movie_name}")
+
+            st.write("")
 
             cols = st.columns(5)
 
-            for col, movie in zip(cols, movies[:10]):
+            for index, movie in enumerate(movies[:10]):
 
-                with col:
+                with cols[index % 5]:
 
                     poster = get_poster(
                         movie.get("poster_path")
                     )
 
-                    if poster:
+                    st.image(
+                        poster,
+                        use_container_width=True
+                    )
 
-                        st.image(
-                            poster,
-                            use_container_width=True
-                        )
-
-                    st.success(
-                        movie.get("title")
+                    st.markdown(
+                        f"### 🎥 {movie.get('title')}"
                     )
 
                     st.caption(
-                        movie.get(
-                            "release_date",
-                            "N/A"
-                        )
+                        f"📅 Release: {movie.get('release_date', 'N/A')}"
                     )
+
+                    rating = movie.get(
+                        "vote_average",
+                        "N/A"
+                    )
+
+                    st.write(
+                        f"⭐ Rating: {rating}"
+                    )
+
+# FOOTER
+st.write("")
+st.markdown("---")
+st.markdown(
+    "Made with ❤️ using Streamlit + TMDB API"
+)
