@@ -1,13 +1,11 @@
 import requests
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
+# Get TMDB API key from environment variable
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
-print("API KEY:", TMDB_API_KEY)
 
+# Search movies from TMDB
 def search_movies(query):
 
     url = "https://api.themoviedb.org/3/search/movie"
@@ -19,16 +17,18 @@ def search_movies(query):
 
     response = requests.get(url, params=params)
 
-    print(response.json())
+    if response.status_code != 200:
+        return []
 
     data = response.json()
 
     return data.get("results", [])
 
 
+# Get movie poster
 def get_poster(poster_path):
 
     if poster_path is None:
-        return None
+        return "https://via.placeholder.com/300x450?text=No+Image"
 
     return f"https://image.tmdb.org/t/p/w500{poster_path}"
