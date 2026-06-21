@@ -134,9 +134,3 @@ if st.button("🔍 Search Movies"):
                         f"⭐ Rating: {rating}"
                     )
 
-# FOOTER
-st.write("")
-st.markdown("---")
-st.markdown(
-    "Made with ❤️ by DATA SCIENCE GROUP 14B"
-)
